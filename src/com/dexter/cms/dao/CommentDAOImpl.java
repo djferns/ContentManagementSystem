@@ -23,6 +23,15 @@ public class CommentDAOImpl implements CommentDAO {
 		this.sessionFactory = sessionFactory;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.dexter.cms.dao.CommentDAO#addComment(int)
+	 */
+	@Override
+	public void addComment(Comment comment) {
+		Session session = sessionFactory.getCurrentSession();
+		session.save(comment);
+	}
+
 	@SuppressWarnings("rawtypes")
 	@Override
 	public List<Comment> getCommentsForId(int articleId) {

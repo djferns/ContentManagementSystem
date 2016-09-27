@@ -61,11 +61,8 @@ public class CommentController {
 	public String addComment(@ModelAttribute("article") Article article){
 		Comment comment = article.getComments().get(0);
 		comment.setCreatedDate(new Date());
-		List<Comment> comments = commentService.getCommentsForId(article.getId());
-		comments.add(comment);
-		article.setComments(comments);
-		//article.getComments().get(0).setCreatedDate(new Date());
-		articleService.updateArticle(article);
+		comment.setArticle(article);
+		commentService.addComment(comment);
 		String url = "redirect:/addComment/" + article.getId();
 		return url;
 	}

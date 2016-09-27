@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -33,23 +35,15 @@ public class Comment implements Serializable {
 	@Column(name="comment_create_date")
 	private Date createdDate;
 	
+	@ManyToOne
+	@JoinColumn(name="article_id")
+	private Article article;
+	
 	/**
 	 * 
 	 */
 	public Comment() {
 		
-	}
-
-	/**
-	 * @param commentName
-	 * @param commentAuthor
-	 * @param createdDate
-	 */
-	public Comment(String commentName, String commentAuthor) {
-		super();
-		this.commentName = commentName;
-		this.commentAuthor = commentAuthor;
-		this.createdDate = new Date();
 	}
 
 	/**
@@ -69,13 +63,15 @@ public class Comment implements Serializable {
 	 * @param commentName
 	 * @param commentAuthor
 	 * @param createdDate
+	 * @param article
 	 */
-	public Comment(int commentId, String commentName, String commentAuthor) {
+	public Comment(int commentId, String commentName, String commentAuthor, Date createdDate, Article article) {
 		super();
 		this.commentId = commentId;
 		this.commentName = commentName;
 		this.commentAuthor = commentAuthor;
-		this.createdDate = new Date();
+		this.createdDate = createdDate;
+		this.article = article;
 	}
 
 	/**
@@ -132,6 +128,20 @@ public class Comment implements Serializable {
 	 */
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
+	}
+
+	/**
+	 * @return the article
+	 */
+	public Article getArticle() {
+		return article;
+	}
+
+	/**
+	 * @param article the article to set
+	 */
+	public void setArticle(Article article) {
+		this.article = article;
 	}
 	
 }

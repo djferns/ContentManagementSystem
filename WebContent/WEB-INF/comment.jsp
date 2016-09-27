@@ -66,27 +66,27 @@
 			<tr>
 				<td><spring:message text="Title" /></td>
 				<td><form:input path="title" readonly="true" disabled="true" />
-					<form:hidden path="title" /></td>
+					</td>
 				<td colspan="2"><spring:message text="Content" /></td>
 			</tr>
 			<tr>
 				<td><spring:message text="Author" /></td>
 				<td><form:input path="author" readonly="true" disabled="true" />
-					<form:hidden path="author" /></td>
+					</td>
 				<td><form:textarea rows="2" path="content" readonly="true"
 						disabled="true" /> <form:hidden path="content" /></td>
 			</tr>
 			<tr>
 				<td><spring:message text="Summary" /></td>
 				<td><form:input path="summary" readonly="true" disabled="true" />
-					<form:hidden path="summary" /></td>
+					</td>
 			</tr>
 			<tr>
 				<td><form:label path="createdDate">
 						<spring:message text="Created On" />
 					</form:label></td>
 				<td><form:input  path="createdDate" readonly="true"
-						disabled="true" /> <form:hidden path="createdDate" /></td>
+						disabled="true" /> </td>
 			</tr>
 		</table>
 		<br>

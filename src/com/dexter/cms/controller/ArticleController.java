@@ -36,12 +36,12 @@ public class ArticleController {
 	public void setArticleService(ArticleService articleService) {
 		this.articleService = articleService;
 	}
-	
+
 	@RequestMapping("/")
-    public String displayHomePage(Model model) {
-        return "home";
-    }
-	
+	public String displayHomePage(Model model) {
+		return "home";
+	}
+
 	@RequestMapping(value = "/addArticle", method = RequestMethod.GET)
 	public String getArticleAddPage(Model model) {
 		Article article = new Article();
@@ -49,23 +49,33 @@ public class ArticleController {
 		return "article";
 	}
 
-	
+
 	@RequestMapping(value="/article/add", method=RequestMethod.POST)
 	public String addArticle(@ModelAttribute("article") Article article, @RequestParam("file") MultipartFile file){
-		
+
 		if (!file.isEmpty()) {
 			try {
 				byte[] bytes = file.getBytes();
-				
+
+				switch(file.getContentType()){
+
+				case "image/png" : article.setFileName(article.getFileName() + ".png");
+									break;
+
+				case "image/jpg" : article.setFileName(article.getFileName() + ".jpg");
+									break;
+
+				}
+
 				// Creating the directory to store file
-				String rootPath = "C:/Users/user/Documents/CourseSessions/HibernateSession/ContentManagementSystem/WebContent/";
+				String rootPath = "C:/Users/user/Documents/CourseSessions/HibernateSession/ContentManagementSystem/WebContent";
 				File dir = new File(rootPath + File.separator + "uploadedFiles");
 				if (!dir.exists())
 					dir.mkdirs();
-				
-				String fileLocation = dir.getAbsolutePath() + File.separator + article.getFileName() + ".png";
+
+				String fileLocation = dir.getAbsolutePath() + File.separator + article.getFileName();
 				article.setFileLocation(fileLocation);
-				
+
 				// Create the file on server
 				File serverFile = new File(fileLocation);
 				BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
@@ -75,36 +85,36 @@ public class ArticleController {
 				return "You failed to upload " + article.getFileName() + " => " + e.getMessage();
 			}
 		}
-		
+
 		article.setCreatedDate(new Date());
 		if(article.getId() == 0){
 			articleService.addArticle(article);
 		}else{
 			articleService.updateArticle(article);
 		}
-		
+
 		return "redirect:/";
 	}
-	
+
 	@RequestMapping("/viewArticle/{articleId}")
-    public String viewArticle(@PathVariable("articleId") int articleId, Model model){
+	public String viewArticle(@PathVariable("articleId") int articleId, Model model){
 		model.addAttribute("article", articleService.getArticle(articleId));
-        return "viewArticle";
+		return "viewArticle";
 	}
-	
+
 	@RequestMapping("/editArticle/{articleId}")
-    public String updateArticle(@PathVariable("articleId") int articleId, Model model){
-        model.addAttribute("article", articleService.getArticle(articleId));
-        return "article";
-    }
-	
-	@RequestMapping("/removeArticle/{articleId}")
-    public String removeArticle(@PathVariable("articleId") int articleId){
-		
-		articleService.removeArticle(articleId);
-        return "redirect:/";
+	public String updateArticle(@PathVariable("articleId") int articleId, Model model){
+		model.addAttribute("article", articleService.getArticle(articleId));
+		return "article";
 	}
-	
+
+	@RequestMapping("/removeArticle/{articleId}")
+	public String removeArticle(@PathVariable("articleId") int articleId){
+
+		articleService.removeArticle(articleId);
+		return "redirect:/";
+	}
+
 	@RequestMapping(value = "/getAllArticles/{action}", method = RequestMethod.GET)
 	public String listArticles(@PathVariable("action") String action, Model model) {
 		if(action!=null && !action.isEmpty()){
@@ -126,12 +136,12 @@ public class ArticleController {
 		model.addAttribute("listArticles", articleService.getAllArticles());
 		return "articles";
 	}
-	
+
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
-	    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-	    binder.registerCustomEditor(Date.class, new CustomDateEditor(
-	            dateFormat, false));
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		binder.registerCustomEditor(Date.class, new CustomDateEditor(
+				dateFormat, false));
 	}
-	
+
 }

@@ -44,22 +44,34 @@
 				<form:input path="summary" />
 			</td>		
 		</tr>
-		<tr>
-			<td>
-				<spring:message text="File to upload"/>
-			</td>
-			<td>
-				<input type="file" name="file">
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<spring:message text="File Name"/>
-			</td>
-			<td>
-				<form:input path="fileName" />
-			</td>
-		</tr>
+		<c:if test="${empty article.fileName}">
+			<tr>
+				<td>
+					<spring:message text="File to upload"/>
+				</td>
+				<td>
+					<input type="file" name="file">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<spring:message text="File Name"/>
+				</td>
+				<td>
+					<form:input path="fileName" />
+				</td>
+			</tr>
+		</c:if>
+		<c:if test="${!empty article.fileName}">
+			<tr>
+				<td>
+					<spring:message text="File uploaded"/>
+				</td>
+				<td>
+					<form:input path="fileName" readonly="true" disabled="true" />
+				</td>
+			</tr>
+		</c:if>
 		<tr>
 			<td colspan="4">
 				<c:if test="${!empty article.title}">
